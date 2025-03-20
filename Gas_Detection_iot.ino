@@ -6,8 +6,8 @@
 // WiFi Credentials
 #define WIFI_SSID "Localhost"
 #define WIFI_PASSWORD "127.0.0.1"
-#define FIREBASE_HOST "gas-detection-b2ad3-default-rtdb.firebaseio.com"
-#define FIREBASE_AUTH "B4CDZvc1xZEnmd6yMBZucdNmHtTwYK4qw81HSi7d"
+#define FIREBASE_HOST "YOUR_FIREBASE_PATH
+#define FIREBASE_AUTH "FIREBASE_SECRET_KEY
 
 // Firebase & WiFi objects
 FirebaseData firebaseData;
