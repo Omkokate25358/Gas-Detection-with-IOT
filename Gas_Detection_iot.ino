@@ -4,8 +4,8 @@
 #include <FirebaseESP8266.h>
 
 // WiFi Credentials
-#define WIFI_SSID "Localhost"
-#define WIFI_PASSWORD "127.0.0.1"
+#define WIFI_SSID "YOUR_WIFI_NAME"
+#define WIFI_PASSWORD "YOUR_WIFI_PASSWORD"
 #define FIREBASE_HOST "YOUR_FIREBASE_PATH
 #define FIREBASE_AUTH "FIREBASE_SECRET_KEY
 
@@ -48,19 +48,10 @@ void connectWiFi() {
     Serial.println("\nWiFi Connected! IP Address: " + WiFi.localIP().toString());
 }
 
-void initializeFirebase() {
-    firebaseConfig.host = FIREBASE_HOST;
-    firebaseConfig.signer.tokens.legacy_token = FIREBASE_AUTH;
-    Firebase.begin(&firebaseConfig, &firebaseAuth);
-    Firebase.reconnectWiFi(true);
-    Serial.println("Firebase Initialized!");
-}
-
-
 void setup() {
     Serial.begin(9600);
-    connectWiFi();
-    initializeFirebase();
+    //connectWiFi();
+   // initializeFirebase();
 
     pinMode(MQ2_SENSOR_PIN, INPUT);
     pinMode(RED_LED_PIN, OUTPUT);
@@ -79,39 +70,7 @@ void setup() {
 
 
 void loop() {
-    int gasValue = analogRead(MQ2_SENSOR_PIN); // Read MQ-2 sensor value
-    Serial.print("Gas Value: ");
-    Serial.println(gasValue);
-
-    if (Firebase.setInt(firebaseData, "/sensor/randomValue", gasValue)) {
-        Serial.println("Data uploaded successfully!");
-    } else {
-        Serial.print("Firebase Error: ");
-        Serial.println(firebaseData.errorReason());
-    }
-
-    if (gasValue > threshold) {
-        if (!gasDetected) {
-            gasDetected = true;
-            gasStartTime = millis();  // Record the start time
-        }
-
-        // If gas persists for 5 seconds
-        if (millis() - gasStartTime >= 5000) {
-            servo.write(90);         // Rotate servo to 90 degrees
-        }
-
-        // Gas detected - Alert system
-        digitalWrite(RED_LED_PIN, HIGH);   // Red LED ON
-        digitalWrite(GREEN_LED_PIN, LOW);  // Green LED OFF
-        digitalWrite(BUZZER_PIN, HIGH);    // Buzzer ON
-    } else {
-        gasDetected = false;
-        servo.write(0);                   // Reset servo to 0 degrees
-        digitalWrite(RED_LED_PIN, LOW);   // Red LED OFF
-        digitalWrite(GREEN_LED_PIN, HIGH); // Green LED ON
-        digitalWrite(BUZZER_PIN, LOW);    // Buzzer OFF
-    }
+    
 
     delay(2000);  // Delay for stability
 }
